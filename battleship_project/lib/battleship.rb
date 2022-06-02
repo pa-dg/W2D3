@@ -54,7 +54,7 @@ class Battleship
     def turn
         position = @player.get_move
 
-        if @board.attack(position) == false
+        if !@board.attack(position) 
             @remaining_misses -= 1
         end
 

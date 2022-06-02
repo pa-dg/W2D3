@@ -50,7 +50,7 @@ class Board
     end    
 
     def self.print_grid(grid)
-        grid.each { |inner_grid| puts inner_grid.join(" ") }
+        @grid.each { |inner_grid| puts inner_grid.join(" ") }
 
     end
     
