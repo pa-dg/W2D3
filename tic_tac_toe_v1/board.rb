@@ -1,74 +1,64 @@
 class Board
     def initialize
-        @grid = Array.new(3) { Array.new(3, '_') }
+        @grid = Array.new(3) {Array.new(3, '_')}
     end
 
-    def [](position)
-        @grid[position.first][position.last]
+    def [](pos)
+        row, col = pos
+        @grid[row][col] = pos
+    end    
+
+    def []=(pos, val)
+        row, col = pos
+        @grid[row][col] = val
+    end
+    
+    def valid?(pos)
+        pos.none? { |i| i < 0 || i > @grid.length - 1 }
     end
 
-    def []=(position, val?)
-        @grid[position.first][position.last] = val
+    def empty?(pos)
+        return self[pos] == '_'
     end
-
-    def valid?(position)
-        position.none? { |num| num < 0 || num > 2 }
-    end
-
-    def empty?(position)
-        if self[position] == '_'
-            return true
-        else
-            return false
-        end
-    end
-
-    def place_mark(position, mark)
-        if self.valid?(position) && self.empty?(position)
+    
+    def place_mark(pos, mark)
+        if self.valid?(pos) || self.empty?(pos)
             self[pos] = mark
         else
-            raise 'invalid mark'
+            raise 'error - invalid position'
         end
     end
 
     def print
-        @grid.each { |row| puts row.join(" ") }
+        return @grid.map { |row| puts row.join(" ") }
     end
-
+    
     def win_row?(mark)
-        return true if @grid.any? { |row| row.uniq.length == 1 }
-
-        return false
+        return @grid.any? { |row| row.all?(mark) }
     end
-
+    
     def win_col?(mark)
-        return true if @grid.transpose.any? { |col| col.uniq.length == 1 }
-
-        return false
+        return @grid.transpose.any? { |col| col.all?(mark) }
     end
 
     def win_diagonal?(mark)
-        left_diagonal = []
-        right_diagonal = []
+        left_to_right = []
+        right_to_left = []
 
-        (0..@grid.length - 1).each do |i|
-            left_diagonal << @grid[i][i]
-            right_diagonal << @grid[i][@grid.length - 1 - i]
+        (0...@grid.length).each do |i|
+            left_to_right << @grid[@grid.length - 1 - i][i]
+            right_to_left << @grid[i][i]
         end
 
-        if left_diagonal.all?(mark) || right_diagonal.all?(mark)
-            return true
-        end
-
-        return false
+        return left_to_right.all?(mark) || right_to_left.all?(mark)
     end
 
     def win?(mark)
-        win_row?(mark) || win_col?(mark) || win_diagonal?(mark)
+        return self.win_row?(mark) || self.win_col?(mark) || self.win_diagonal?(mark)
     end
     
     def empty_positions?
-        @grid.any? { |row| row.include?("_") }
+        return @grid.any? { |row| row.include?('_') }
     end
     
 end

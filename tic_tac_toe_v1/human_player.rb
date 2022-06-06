@@ -1,15 +1,20 @@
 class HumanPlayer
-    attr_reader :mark_val
-    
-    def initialize(mark_val)
-        @mark_val = mark_val
+    def initialize(val)
+        @mark = val
+    end
+
+    def mark
+        @mark
     end
 
     def get_position
-        puts "Enter your position, Player #{mark_val.to_s}, as two numbers with a space betweem them representing position in the format `0 0` as `row col`"
-        input = gets.chomp.split(" ").map(&:to_i)
-        raise "invalid input" if input.length != 2
+        puts "Player #{@mark.to_s}, enter your position as two numbers with a space in between to represent the format `row col`"
+        position = gets.chomp.split(" ").map(&:to_i)
 
-        return input
+        if position.length != 2
+            raise 'error - invalid position, try again'
+        else
+            position
+        end
     end
 end

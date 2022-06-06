@@ -39,7 +39,7 @@ class Board
             random_row = rand(0...@grid.length)
             random_col = rand(0...@grid.length) 
             position = [random_row, random_col]
-            self[position] = :S
+            self[position] = :S     #from the []= method
         end
 
     end
